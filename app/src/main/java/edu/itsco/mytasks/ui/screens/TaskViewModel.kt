@@ -3,6 +3,7 @@ package edu.itsco.mytasks.ui.screens
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import edu.itsco.mytasks.data.persistence.DatabaseTask
 import edu.itsco.mytasks.data.persistence.Task
 import edu.itsco.mytasks.data.repositories.TaskRepository
@@ -30,5 +31,17 @@ class TaskViewModel(application: Application): ViewModel() {
 
     fun deleteTask(task: Task){
         taskRepository.deleteTask(task)
+    }
+}
+
+class TaskViewModelFactory(
+    val application: Application)
+    :ViewModelProvider.Factory{
+
+    override fun <T : ViewModel>
+            create(modelClass: Class<T>)
+    : T {
+        return TaskViewModel(
+            application = application) as T
     }
 }
