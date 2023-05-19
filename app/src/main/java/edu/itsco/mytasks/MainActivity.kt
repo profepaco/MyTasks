@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import edu.itsco.mytasks.ui.navigation.SetupNavGraph
 import edu.itsco.mytasks.ui.screens.HomeScreen
 import edu.itsco.mytasks.ui.screens.TaskViewModel
 import edu.itsco.mytasks.ui.screens.TaskViewModelFactory
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val owner =
                 LocalViewModelStoreOwner.current
-
+            val navHost = rememberNavController()
             MyTasksTheme {
                 owner?.let{
                     val viewModel: TaskViewModel =
@@ -32,7 +34,11 @@ class MainActivity : ComponentActivity() {
                             TaskViewModelFactory(
                                 application = this.application)
                         )
-                    HomeScreen(viewModel = viewModel)
+                    //HomeScreen(viewModel = viewModel,
+                    //    navHost = navHost)
+                    SetupNavGraph(
+                        navHost = navHost,
+                        viewModel = viewModel)
                 }
             }
         }

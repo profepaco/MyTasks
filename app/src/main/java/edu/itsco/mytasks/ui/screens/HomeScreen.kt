@@ -1,6 +1,5 @@
 package edu.itsco.mytasks.ui.screens
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,12 +23,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import edu.itsco.mytasks.data.persistence.Task
+import edu.itsco.mytasks.ui.navigation.Screens
 import edu.itsco.mytasks.ui.theme.MyTasksTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun HomeScreen(viewModel: TaskViewModel) {
+fun HomeScreen(
+    viewModel: TaskViewModel,
+    navHost: NavHostController) {
     val listTask: List<Task> by
         viewModel.allTask.observeAsState(listOf())
     Scaffold(
@@ -38,7 +41,11 @@ fun HomeScreen(viewModel: TaskViewModel) {
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { /*TODO*/ }){
+                onClick = {
+                    navHost.navigate(
+                        route = Screens.AddTaskScreen.url
+                    )
+                }){
                 Text(text = "Add")
             }
         },

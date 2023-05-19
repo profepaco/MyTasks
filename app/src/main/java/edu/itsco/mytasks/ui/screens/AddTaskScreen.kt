@@ -1,16 +1,12 @@
 package edu.itsco.mytasks.ui.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,11 +22,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import edu.itsco.mytasks.data.persistence.Task
+import edu.itsco.mytasks.ui.navigation.Screens
 import edu.itsco.mytasks.ui.theme.MyTasksTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun AddTaskScreen(){
+fun AddTaskScreen(
+    navHost: NavHostController,
+    viewModel: TaskViewModel)
+{
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
@@ -39,7 +41,11 @@ fun AddTaskScreen(){
             TopAppBar(
                 title = { Text(text = "New Task") },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        navHost.navigate(
+                            route = Screens.HomeScreen.url
+                        )
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Regresar"
@@ -66,7 +72,19 @@ fun AddTaskScreen(){
                     modifier =  Modifier.fillMaxWidth()
                 )
                 ElevatedButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                         val task:Task = Task(
+                             id = 0,
+                             title = title,
+                             description = description,
+                             isCompleted = false
+                         )
+                         viewModel.createTask(task)
+                         //Regresa a Home
+                         navHost.navigate(
+                             route = Screens.HomeScreen.url
+                         )
+                    },
                     modifier =  Modifier.padding(vertical= 8.dp)
                 ) {
                     Text("Add Task")
@@ -75,12 +93,12 @@ fun AddTaskScreen(){
         }
     }
 }
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun AddTaskScreenPreview(){
     MyTasksTheme {
-        AddTaskScreen()
+        AddTaskScreen(navHost, viewModel)
     }
-}
+} */
